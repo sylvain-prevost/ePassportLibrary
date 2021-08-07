@@ -539,7 +539,7 @@ TerminalType ::= INTEGER {
                    g4-facsimile (6),
                    ia5-terminal (7),
                    videotex (8)
-               } (0..ub-integer-options)
+               } -- (0..ub-integer-options)
 
 -- Extension Domain-defined Attributes
 teletex-domain-defined-attributes INTEGER ::= 6
