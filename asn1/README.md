@@ -6,7 +6,7 @@
 > https://github.com/vlm/asn1c  
   
 `````code
-asn1c -EF <module.asn>             # Check semantic validity
+asn1c -EF PKIX1Explicit88.asn PKIX1Implicit88.asn PKIXAttributeCertificate.asn AttributeCertificateVersion1.asn CryptographicMessageSyntaxAlgorithms.asn CryptographicMessageSyntax.asn CscaMasterList.asn LDSSecurityObjectV1.asn  
 `````
 
 

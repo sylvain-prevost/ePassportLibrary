@@ -8,14 +8,18 @@ DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
 IMPORTS
      -- Imports from RFC 5280 [PROFILE], Appendix A.1
-     AlgorithmIdentifier, Certificate, CertificateList, CertificateSerialNumber, Name
+     AlgorithmIdentifier, Certificate, CertificateList, CertificateSerialNumber, Name, Attribute, Time
           FROM PKIX1Explicit88 {iso (1) identified-organization (3) dod (6) internet (1) security (5) mechanisms (5) pkix (7) mod (0) pkix1-explicit (18)}
-     -- Imports from RFC 3281 [ACPROFILE], Appendix B
+     -- Imports from RFC 5280 [PROFILE], Appendix A.2
+     SubjectKeyIdentifier
+          FROM PKIX1Implicit88 {iso (1) identified-organization (3) dod (6) internet (1) security (5) mechanisms (5) pkix (7) id-mod (0) id-pkix1-implicit (19)}
+     -- Imports from RFC 5755 [ACPROFILE]
      AttributeCertificate
-          FROM PKIXAttributeCertificate {iso (1) identified-organization (3) dod (6) internet (1) security (5) mechanisms (5) pkix (7) mod (0) attribute-cert (12)}
-     -- Imports from Appendix B of this document
+          FROM PKIXAttributeCertificate-2008 {iso (1) identified-organization (3) dod (6) internet (1) security (5) mechanisms (5) pkix (7) id-mod (0) id-mod-attribute-cert-v2 (61)}
+     -- Imports from RFC 5652, Appendix B
      AttributeCertificateV1
           FROM AttributeCertificateVersion1 {iso (1) member-body (2) us (840) rsadsi (113549) pkcs (1) pkcs-9 (9) smime (16) modules (0) v1AttrCert (15)};
+    
 
 -- Cryptographic Message Syntax
 ContentInfo ::= SEQUENCE {
@@ -61,13 +65,6 @@ SignerIdentifier ::= CHOICE {
 SignedAttributes ::= SET SIZE (1..MAX) OF Attribute
 
 UnsignedAttributes ::= SET SIZE (1..MAX) OF Attribute
-
-Attribute ::= SEQUENCE {
-    attrType       OBJECT IDENTIFIER,
-    attrValues     SET OF AttributeValue
-}
-
-AttributeValue ::= ANY
 
 SignatureValue ::= OCTET STRING
 
@@ -154,8 +151,6 @@ RecipientKeyIdentifier ::= SEQUENCE {
     date           GeneralizedTime OPTIONAL,
     other          OtherKeyAttribute OPTIONAL
 }
-
-SubjectKeyIdentifier ::= OCTET STRING
 
 KEKRecipientInfo ::= SEQUENCE {
     version        CMSVersion, -- always set to 4
@@ -296,11 +291,6 @@ id-ct-authData OBJECT IDENTIFIER ::= {iso (1) member-body (2) us (840) rsadsi (1
 MessageDigest ::= OCTET STRING
 
 SigningTime ::= Time
-
-Time ::= CHOICE {
-    utcTime        UTCTime,
-    generalTime    GeneralizedTime
-}
 
 Countersignature ::= SignerInfo
 

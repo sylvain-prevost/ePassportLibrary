@@ -4,10 +4,8 @@ DEFINITIONS IMPLICIT TAGS ::= BEGIN
 -- EXPORTS ALL --
 
 IMPORTS
-     id-pe, id-kp, id-qt-unotice, id-qt-cps,
-
-     -- delete following line if "new" types are supported --
-     BMPString, UTF8String, -- end "new" types --ORAddress, Name, RelativeDistinguishedName, CertificateSerialNumber, Attribute, DirectoryString FROM PKIX1Explicit88 {iso (1) identified-organization (3) dod (6) internet (1) security (5) mechanisms (5) pkix (7) id-mod (0) id-pkix1-explicit (18)};
+     id-pe, id-kp, id-qt-unotice, id-qt-cps, CertificateSerialNumber, ORAddress, Name, DirectoryString, Attribute, RelativeDistinguishedName
+     FROM PKIX1Explicit88 {iso (1) identified-organization (3) dod (6) internet (1) security (5) mechanisms (5) pkix (7) id-mod (0) id-pkix1-explicit (18)};
 
 -- ISO arc for standard certificate and CRL extensions
 id-ce OBJECT IDENTIFIER ::= {joint-iso-ccitt (2) ds (5) 29}

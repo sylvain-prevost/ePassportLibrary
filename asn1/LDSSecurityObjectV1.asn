@@ -4,7 +4,9 @@ DEFINITIONS IMPLICIT TAGS ::= BEGIN
 IMPORTS
      -- Imports from RFC 3280 [PROFILE]
      AlgorithmIdentifier
-          FROM PKIX1Explicit88 {iso (1) identified-organization (3) dod (6) internet (1) security (5) mechanisms (5) pkix (7) id-mod (0) id-pkix1-explicit (18)};
+          FROM PKIX1Explicit88 {iso (1) identified-organization (3) dod (6) internet (1) security (5) mechanisms (5) pkix (7) id-mod (0) id-pkix1-explicit (18)}
+     DigestAlgorithmIdentifier
+          FROM CryptographicMessageSyntax2004 {iso (1) member-body (2) us (840) rsadsi (113549) pkcs (1) pkcs-9 (9) smime (16) modules (0) cms-2004 (24)};
 
 -- Constants
 ub-DataGroups  INTEGER ::= 16
@@ -24,8 +26,6 @@ LDSSecurityObjectVersion ::= INTEGER {
                    v1 (1)
                -- If LDSSecurityObjectVersion is V1, ldsVersionInfo MUST be present
                }
-
-DigestAlgorithmIdentifier ::= AlgorithmIdentifier
 
 LDSSecurityObject ::= SEQUENCE {
     version        LDSSecurityObjectVersion,
