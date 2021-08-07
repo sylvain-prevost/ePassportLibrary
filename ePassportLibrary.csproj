@@ -13,8 +13,10 @@
 
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>C# library enabling parsing/manipulation/encoding of MRTD security features (Passport certficates, picture, fingerprint, etc).</Description>
-    <PackageTags>ASN1, ePassport, Certifcates</PackageTags>
+    <Description>C# library enabling parsing/manipulation/encoding of MRTD security features (Passport certificates, picture/fingerprints Datagroups, etc).</Description>
+    <PackageTags>ASN1, ePassport, Certificates</PackageTags>
+    <RepositoryUrl>https://github.com/sylvain-prevost/ePassportLibrary</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/sylvain-prevost/ePassportLibrary</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
