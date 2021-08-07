@@ -147,7 +147,8 @@ RoleSyntax ::= SEQUENCE {
 
 Clearance ::= SEQUENCE {
     policyId       OBJECT IDENTIFIER,
-    classList      ClassList DEFAULT {unclassified},
+    -- classList      ClassList DEFAULT {unclassified},
+    classList      ClassList OPTIONAL,
     securityCategories SET OF SecurityCategory OPTIONAL
 }
 

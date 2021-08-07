@@ -39,17 +39,15 @@ id-ad-caRepository OBJECT IDENTIFIER ::= {id-ad 5}
 -- attribute data types
 Attribute ::= SEQUENCE {
     type           AttributeType,
-    values         SET OF AttributeValue
+    values         SET OF ANY DEFINED BY type
 }
      -- at least one value is required
 
 AttributeType ::= OBJECT IDENTIFIER
 
-AttributeValue ::= ANY -- DEFINED BY AttributeType
-
 AttributeTypeAndValue ::= SEQUENCE {
     type           AttributeType,
-    value          AttributeValue
+    value          ANY DEFINED BY type
 }
 
 -- suggested naming attributes: Definition of the following
@@ -246,7 +244,7 @@ Certificate ::= SEQUENCE {
 }
 
 TBSCertificate ::= SEQUENCE {
-    version        [0] Version DEFAULT v1,
+    version        [0] Version DEFAULT 0,
     serialNumber   CertificateSerialNumber,
     signature      AlgorithmIdentifier,
     issuer         Name,
@@ -484,7 +482,7 @@ ExtensionPhysicalDeliveryAddressComponents ::= PDSParameter
 unformatted-postal-address INTEGER ::= 16
 
 UnformattedPostalAddress ::= SET {
-    printable-address SEQUENCE SIZE (1..ub-pds-physical-address-lines) OF PrintableString (SIZE (1..ub-pds-parameter-length)) OPTIONAL,
+    printable-address SEQUENCE SIZE (1..ub-pds-physical-address-lines) OF PrintablePDSParameter OPTIONAL,
     teletex-string TeletexString (SIZE (1..ub-unformatted-address-length)) OPTIONAL
 }
 
@@ -508,8 +506,10 @@ local-postal-attributes INTEGER ::= 21
 
 LocalPostalAttributes ::= PDSParameter
 
+PrintablePDSParameter ::= PrintableString (SIZE (1..ub-pds-parameter-length))
+
 PDSParameter ::= SET {
-    printable-string PrintableString (SIZE (1..ub-pds-parameter-length)) OPTIONAL,
+    printable-string PrintablePDSParameter OPTIONAL,
     teletex-string TeletexString (SIZE (1..ub-pds-parameter-length)) OPTIONAL
 }
 

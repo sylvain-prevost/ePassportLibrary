@@ -187,7 +187,7 @@ id-ce-cRLDistributionPoints OBJECT IDENTIFIER ::= {id-ce 31}
 CRLDistributionPoints ::= SEQUENCE SIZE (1..MAX) OF DistributionPoint
 
 DistributionPoint ::= SEQUENCE {
-    distributionPoint [0] DistributionPointName OPTIONAL,
+    distributionPointName [0] DistributionPointName OPTIONAL,
     reasons        [1] ReasonFlags OPTIONAL,
     cRLIssuer      [2] GeneralNames OPTIONAL
 }

@@ -102,10 +102,8 @@ PBKDF2-params ::= SEQUENCE {
     },
     iterationCount INTEGER (1..MAX),
     keyLength      INTEGER (1..MAX) OPTIONAL,
-    prf            AlgorithmIdentifier DEFAULT {
-        algorithm hMAC-SHA1,
-        parameters NULL
-    }
+    -- prf            AlgorithmIdentifier DEFAULT {algorithm hMAC-SHA1, parameters NULL}
+    prf            AlgorithmIdentifier OPTIONAL
 }
 
 END -- of CryptographicMessageSyntaxAlgorithms

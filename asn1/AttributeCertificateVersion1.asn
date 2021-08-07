@@ -23,7 +23,7 @@ AttributeCertificateV1 ::= SEQUENCE {
 }
 
 AttributeCertificateInfoV1 ::= SEQUENCE {
-    version        AttCertVersionV1 DEFAULT v1,
+    version        AttCertVersionV1 DEFAULT 0,
     subject        CHOICE {
         baseCertificateID [0] IssuerSerial,
              -- associated with a Public Key Certificate
