@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1;net40</TargetFrameworks>
+    <Authors>Sylvain Prevost</Authors>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>ePassportLibrary.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>C# library enabling parsing/manipulation/encoding of MRTD security features (Passport certficates, picture, fingerprint, etc).</Description>
+    <PackageTags>ASN1, ePassport, Certifcates</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BinaryNotesExtension" Version="1.5.4.2" />
+  </ItemGroup>
+
+</Project>
