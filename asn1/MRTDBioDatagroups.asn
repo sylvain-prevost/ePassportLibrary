@@ -1,0 +1,62 @@
+MRTDBioDatagroups DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+IMPORTS
+    Time, Validity
+          FROM PKIX1Explicit88 {iso (1) identified-organization (3) dod (6) internet (1) security (5) mechanisms (5) pkix (7) mod (0) pkix1-explicit (18)};
+
+BiometricDataBlock ::= OCTET STRING
+
+BiometricType ::= ENUMERATED {
+    multiple                (1),
+    facialFeatures          (2),
+    voice                   (4),
+    fingerPrint             (8),
+    iris                    (16),
+    retina                  (32),
+    handGeometry            (64),
+    signatureDynamics       (128),
+    keystrokDynamics        (256),
+    lipMovement             (512),
+    thermalFaceImage        (1024),
+    thermalHandImage        (2048),
+    gait                    (4096),
+    bodyOdor                (8192),
+    dna                     (16384),
+    earShape                (32768),
+    fingerGeometry          (65536),
+    palmGeometry            (131072),
+    veinPattern             (262144)
+}
+
+BiometricHeaderTemplate ::= SEQUENCE {
+    headerVersion  [0] OCTET STRING OPTIONAL,
+    biometricType  [1] BiometricType OPTIONAL,
+    biometricSubType [2] OCTET STRING OPTIONAL,
+    creationDateTime [3] Time OPTIONAL,
+    validityPeriod [5] Validity OPTIONAL,
+    creator        [6] OCTET STRING OPTIONAL,
+    formatOwner    [7] OCTET STRING (SIZE (2)),
+    formatType     [8] OCTET STRING (SIZE (2))
+}
+
+BiometricInfoTemplate ::= [APPLICATION 96] IMPLICIT SEQUENCE {
+    biometricHeaderTemplate [1] BiometricHeaderTemplate,
+    biometricDataBlock [APPLICATION 46] IMPLICIT BiometricDataBlock
+}
+
+BiometricInfoGroupTemplate ::= [APPLICATION 97] IMPLICIT SEQUENCE {
+    numberOfInstances INTEGER,
+    biometricInfoTemplate ANY -- (numberOfInstances x BiometricInfoTemplate)
+}
+
+-- Face datagroup
+DG2 ::= [APPLICATION 21] IMPLICIT SEQUENCE {
+    biometricInfoGroupTemplate BiometricInfoGroupTemplate
+}
+
+-- FingerPrint datagroup
+DG3 ::= [APPLICATION 3] IMPLICIT SEQUENCE {
+    biometricInfoGroupTemplate BiometricInfoGroupTemplate
+}
+
+END

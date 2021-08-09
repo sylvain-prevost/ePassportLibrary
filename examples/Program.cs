@@ -4,8 +4,8 @@ namespace examples
     
     class Program
     {
-        
-        static void Main(string[] args)
+
+        public static void Main(string[] args)
         {
             // example using LetsEncrypt Self-Signed certificate - see https://letsencrypt.org/certificates/
             CertificateExample.Decode(@"isrgrootx1.der");
