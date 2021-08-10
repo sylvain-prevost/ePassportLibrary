@@ -17,10 +17,10 @@
     <PackageTags>ASN1, ePassport, Certificates</PackageTags>
     <RepositoryUrl>https://github.com/sylvain-prevost/ePassportLibrary</RepositoryUrl>
     <PackageProjectUrl>https://github.com/sylvain-prevost/ePassportLibrary</PackageProjectUrl>
-    <Version>1.0.0.4</Version>
-    <AssemblyVersion>1.0.0.4</AssemblyVersion>
+    <Version>1.0.0.5</Version>
+    <AssemblyVersion>1.0.0.5</AssemblyVersion>
     <Title>ePassportLibrary</Title>
-    <FileVersion>1.0.0.4</FileVersion>
+    <FileVersion>1.0.0.5</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
