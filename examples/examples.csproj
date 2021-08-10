@@ -9,10 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ePassportLibrary" Version="1.0.0.1" />
+    <PackageReference Include="ePassportLibrary" Version="1.0.0.4" />
+    <PackageReference Include="FreeImage-dotnet-core" Version="4.3.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Datagroup2.bin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="isrg-root-x1-cross-signed.der">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

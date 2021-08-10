@@ -208,13 +208,27 @@ namespace ePassport
             return ByteArrayToHexString(DerEncodeAsByteArray<T>(t));
         }
 
-        public static byte[] DerEncodeAsByteArray<T>(T t) where T : IASN1PreparedElement
+        public static void DerEncodeToByteArray<T>(T t, byte[] dest, int destOffset) where T : IASN1PreparedElement
         {
-            IEncoder encoder = CoderFactory.getInstance().newEncoder("DER");
             MemoryStream memoryStream = new MemoryStream();
             try
             {
-                encoder.encode<T>(t, memoryStream);
+                DerEncodeToMemoryStream<T>(t, memoryStream);
+                memoryStream.Position = 0;
+                memoryStream.Read(dest, 0, (int)memoryStream.Length);
+            }
+            finally
+            {
+                memoryStream.Close();
+            }
+        }
+
+        public static byte[] DerEncodeAsByteArray<T>(T t) where T : IASN1PreparedElement
+        {
+            MemoryStream memoryStream = new MemoryStream();
+            try
+            {
+                DerEncodeToMemoryStream<T>(t, memoryStream);
                 memoryStream.Position = 0;
                 return memoryStream.ToArray();
             }
@@ -222,6 +236,11 @@ namespace ePassport
             {
                 memoryStream.Close();
             }
+        }
+
+        public static void DerEncodeToMemoryStream<T>(T t, MemoryStream memoryStream) where T : IASN1PreparedElement
+        {
+            CoderFactory.getInstance().newEncoder("DER").encode<T>(t, memoryStream);            
         }
 
         public static T DerDecode<T>(string message)
@@ -236,17 +255,21 @@ namespace ePassport
 
         public static T DerDecode<T>(byte[] message, int offset, int length)
         {
-            IDecoder decoder = CoderFactory.getInstance().newDecoder("DER");
             MemoryStream memoryStream = new MemoryStream(message, offset, length);
             try
             {
-                return decoder.decode<T>(memoryStream);
+                return DerDecode<T>(memoryStream);
             }
             finally
             {
                 memoryStream.Close();
             }
         }
+
+        public static T DerDecode<T>(MemoryStream memoryStream)
+        {
+            return CoderFactory.getInstance().newDecoder("DER").decode<T>(memoryStream);            
+        }        
 
     }
 }
