@@ -40,5 +40,18 @@ using (FileStream fs = File.Open(filename, FileMode.Open))
 
 ```
 
-see \examples folder for addtional examples.  
+see [examples](examples/) folder for additional examples, including parsing and visualization of face & fingerprints.  
+
+
+</br>
+Output from examples.  
+</br>
+</br>
+</br>
+
+![Alt text](images/examples_output.jpg?raw=true "Title")
+
+</br>
+</br>
+
 
