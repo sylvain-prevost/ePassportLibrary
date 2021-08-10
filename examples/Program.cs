@@ -19,6 +19,9 @@ namespace examples
 
             // example of parsing of an ePassport Datagroup2 (face) parsing
             FaceDatagroupExample.Parse(@"Datagroup2.bin");
+
+            // example of parsing of an ePassport Datagroup3 (fingerprint) parsing
+            FingerPrintDatagroupExample.Parse(@"Datagroup3.bin");
         }
 
         
