@@ -1,5 +1,4 @@
-﻿using org.bn;
-using org.bn.coders;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,73 +8,14 @@ using System.Numerics;
 using System.Reflection;
 using System.Text;
 
+using org.bn;
+using org.bn.coders;
+
 namespace ePassport
 {
     public static class Utils
     {
-        /// <summary>
-        /// Decode single OID value.
-        /// </summary>
-        /// <param name="bt">source stream.</param>
-        /// <param name="v">output value</param>
-        /// <returns>OID value bytes.</returns>
-        private static int DecodeValue(Stream bt, ref BigInteger v)
-        {
-            byte b;
-            int i = 0;
-            v = 0;
-            while (true)
-            {
-                b = (byte)bt.ReadByte();
-                i++;
-                v <<= 7;
-                v += (ulong)(b & 0x7f);
-                if ((b & 0x80) == 0)
-                    return i;
-            }
-        }
-
-        /// <summary>
-        /// Decode OID <see cref="Stream"/> and return OID string.
-        /// </summary>
-        /// <param name="bt">source stream.</param>
-        /// <returns>result OID string.</returns>
-        private static string Decode(Stream bt)
-        {
-            string retval = "";
-            byte b;
-            BigInteger v = 0;
-            b = (byte)bt.ReadByte();
-            retval += Convert.ToString(b / 40);
-            retval += "." + Convert.ToString(b % 40);
-            while (bt.Position < bt.Length)
-            {
-                try
-                {
-                    DecodeValue(bt, ref v);
-                    retval += "." + v.ToString();
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Failed to decode OID value: " + e.Message);
-                }
-            }
-            return retval;
-        }
-
-        /// <summary>
-        /// Decode OID byte array to OID string.
-        /// </summary>
-        /// <param name="data">source byte array.</param>
-        /// <returns>result OID string.</returns>
-        public static string OIDDecode(byte[] data)
-        {
-            MemoryStream ms = new MemoryStream(data);
-            ms.Position = 0;
-            string retval = Decode(ms);
-            ms.Close();
-            return retval;
-        }
+        #region HexString helpers
 
         /// <summary>
         /// Obtain the ASCII string representation of a Hexadecimal String
@@ -119,6 +59,32 @@ namespace ePassport
         {
             return ByteArrayToHexString(input, 0, input.Length);
         }
+
+        /// <summary>
+        /// Obtain the byte array representation of an hexadecimal string.
+        /// </summary>
+        /// <param name="input">input string</param>
+        /// <returns>byte array</returns>
+        public static byte[] HexStringToByteArray(string input)
+        {
+            if ((input.Length % 2) != 0)
+            {
+                throw new ArgumentException("input byte length must be modulo-2");
+            }
+
+            byte[] output = new byte[input.Length / 2];
+
+            for (int i = 0; i < output.Length; i++)
+            {
+                output[i] = (byte)Convert.ToInt32(input.Substring(i * 2, 2), 16);
+            }
+
+            return output;
+        }
+
+        #endregion
+
+        #region Array comparison Helpers
 
         /// <summary>
         /// Compare two byte arrays.
@@ -181,27 +147,9 @@ namespace ePassport
             return true;
         }
 
-        /// <summary>
-        /// Obtain the byte array representation of an hexadecimal string.
-        /// </summary>
-        /// <param name="input">input string</param>
-        /// <returns>byte array</returns>
-        public static byte[] HexStringToByteArray(string input)
-        {
-            if ((input.Length % 2) != 0)
-            {
-                throw new ArgumentException("input byte length must be modulo-2");
-            }
+        #endregion
 
-            byte[] output = new byte[input.Length / 2];
-
-            for (int i = 0; i < output.Length; i++)
-            {
-                output[i] = (byte)Convert.ToInt32(input.Substring(i * 2, 2), 16);
-            }
-
-            return output;
-        }
+        #region DER Encoding/Decoding
 
         public static String DerEncodeAsHexString<T>(T t) where T : IASN1PreparedElement
         {
@@ -269,7 +217,33 @@ namespace ePassport
         public static T DerDecode<T>(MemoryStream memoryStream)
         {
             return CoderFactory.getInstance().newDecoder("DER").decode<T>(memoryStream);            
-        }        
+        }
+
+        #endregion
+
+        #region Extensions
+
+        private static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            if (fi == null)
+            {
+                throw new Exception(string.Format("GetEnumDescription() was unable to GetField for {0} of value {1}", value.GetType(), value.ToString()));
+            }
+
+            DescriptionAttribute[] attributes =
+             (DescriptionAttribute[])fi.GetCustomAttributes(
+             typeof(DescriptionAttribute), false);
+            return (attributes.Length > 0) ? attributes[0].Description : value.ToString();
+        }
+
+        public static string GetDescription(this Enum value)
+        {
+            return GetEnumDescription(value);
+        }
+
+        #endregion
 
     }
 }
