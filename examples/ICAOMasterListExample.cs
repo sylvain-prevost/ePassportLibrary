@@ -8,6 +8,16 @@ namespace examples
 {
     class ICAOMasterListExample
     {
+        static void displayCertInfo(Certificate cert)
+        {
+            Dictionary<string, string> certDict = CertificateExample.GetSomeHumanReadableInfo(cert);
+            foreach (string key in certDict.Keys)
+            {
+                Console.WriteLine("\t\t" + key + " = " + certDict[key]);
+            }
+        }
+
+        
         public static void Parse(string filename)
         {
             Console.WriteLine("Parsing ICAO Masterlist: {0}", filename);
@@ -35,28 +45,30 @@ namespace examples
                     if (Oids.ParseKnown(signedData.EncapContentInfo.EContentType.Value.Value) == KnownOids.cscaMasterList)
                     {
                         // check the masterlist digest signature here
-                        // ....
+                        // check the digest signature
+                        Certificate cscaMasterListcertificate;
 
-                        // now obtain the master list content
-                        CscaMasterList cscaMasterList = Utils.DerDecode<CscaMasterList>(signedData.EncapContentInfo.EContent);
-
-                        Console.WriteLine("number of certs present in cscaMasterList : " + cscaMasterList.CertList.Count);
-
-                        int idx = 0;
-
-                        foreach (Certificate certificate in cscaMasterList.CertList)
+                        if (CryptoUtils.VerifySignedData(signedData, out cscaMasterListcertificate) == true)
                         {
-                            Console.WriteLine("Certificate[{0}]:", idx);
+                            Console.WriteLine("\tCSCA masterlist digest signature verified successfully using cert :");
+                            displayCertInfo(cscaMasterListcertificate);
+                            
+                            // now obtain the master list content
+                            CscaMasterList cscaMasterList = Utils.DerDecode<CscaMasterList>(signedData.EncapContentInfo.EContent);
 
-                            Dictionary<string, string> dic_KnownCert = CertificateExample.GetSomeHumanReadableInfo(certificate);
+                            Console.WriteLine("\tnumber of certs present in cscaMasterList : " + cscaMasterList.CertList.Count);
 
-                            foreach (string key in dic_KnownCert.Keys)
-                            {
-                                Console.WriteLine("\t" + key + " = " + dic_KnownCert[key]);
+                            int idx = 0;
+                            foreach (Certificate certificate in cscaMasterList.CertList) {
+                                Console.WriteLine("\tCertificate[{0}]:", idx);
+                                displayCertInfo(certificate);
+                                idx++;
                             }
-
-                            idx++;
                         }
+                        else
+                        {
+                            Console.WriteLine("\tERROR : CSCA masterlist digest signature verification failed");
+                        }                        
                     }
                 }
 
