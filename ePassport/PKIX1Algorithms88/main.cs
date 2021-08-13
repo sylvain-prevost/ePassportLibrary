@@ -16,9 +16,4 @@ using org.bn;
 
 namespace ePassport {
 
-    [ASN1Module ( Name = "CryptographicMessageSyntaxAlgorithms", IsImplicitTags =  true  ) ]
-    public class CryptographicMessageSyntaxAlgorithms 
-    {
-    }
-        
 }

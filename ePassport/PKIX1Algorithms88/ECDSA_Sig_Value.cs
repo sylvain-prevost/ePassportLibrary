@@ -18,28 +18,28 @@ namespace ePassport {
 
 
     [ASN1PreparedElement]
-    [ASN1Sequence(Name = "RC2CBCParameter", IsSet = false)]
-    public class RC2CBCParameter : IASN1PreparedElement 
+    [ASN1Sequence(Name = "ECDSA_Sig_Value", IsSet = false)]
+    public class ECDSA_Sig_Value : IASN1PreparedElement 
     {
         
-        private BigInteger rc2ParameterVersion_;
+        private BigInteger r_;
         [ASN1Integer( Name = "" )]
     
-		[ASN1Element(Name = "rc2ParameterVersion", IsOptional = false, HasTag = false, HasDefaultValue = false)]
-        public BigInteger Rc2ParameterVersion
+		[ASN1Element(Name = "r", IsOptional = false, HasTag = false, HasDefaultValue = false)]
+        public BigInteger R
         {
-            get { return rc2ParameterVersion_; }
-            set { rc2ParameterVersion_ = value;  }
+            get { return r_; }
+            set { r_ = value;  }
         }
   
-        private byte[] iv_;
-        [ASN1OctetString( Name = "" )]
+        private BigInteger s_;
+        [ASN1Integer( Name = "" )]
     
-		[ASN1Element(Name = "iv", IsOptional = false, HasTag = false, HasDefaultValue = false)]
-        public byte[] Iv
+		[ASN1Element(Name = "s", IsOptional = false, HasTag = false, HasDefaultValue = false)]
+        public BigInteger S
         {
-            get { return iv_; }
-            set { iv_ = value;  }
+            get { return s_; }
+            set { s_ = value;  }
         }
   
 
@@ -48,7 +48,7 @@ namespace ePassport {
             
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(RC2CBCParameter));
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(ECDSA_Sig_Value));
         public IASN1PreparedElementData PreparedData 
         {
             get { return preparedData; }

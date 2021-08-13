@@ -18,15 +18,15 @@ namespace ePassport {
 
 
     [ASN1PreparedElement]
-    [ASN1BoxedType(Name = "CBCParameter")]
-    public class CBCParameter: IASN1PreparedElement 
+    [ASN1BoxedType(Name = "HashAlgorithm")]
+    public class HashAlgorithm: IASN1PreparedElement 
     {
 
-        private IV val;
+        private AlgorithmIdentifier val;
 
         
-		[ASN1Element(Name = "CBCParameter", IsOptional = false, HasTag = false, HasDefaultValue = false)]
-        public IV Value
+		[ASN1Element(Name = "HashAlgorithm", IsOptional = false, HasTag = false, HasDefaultValue = false)]
+        public AlgorithmIdentifier Value
         {
             get { return val; }
             
@@ -36,7 +36,7 @@ namespace ePassport {
 
         
         
-        public CBCParameter ()
+        public HashAlgorithm ()
         {
         }
 
@@ -44,7 +44,7 @@ namespace ePassport {
         {
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(CBCParameter));
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(HashAlgorithm));
         public IASN1PreparedElementData PreparedData 
         {
             get { return preparedData; }

@@ -18,13 +18,13 @@ namespace ePassport {
 
 
     [ASN1PreparedElement]
-    [ASN1BoxedType(Name = "IV")]
-    public class IV: IASN1PreparedElement 
+    [ASN1BoxedType(Name = "KEA_Parms_Id")]
+    public class KEA_Parms_Id: IASN1PreparedElement 
     {
     
         private byte[] val = null;
 
-        [ASN1OctetString(Name = "IV")]
+        [ASN1OctetString(Name = "KEA-Parms-Id")]
         
         public byte[] Value
         {
@@ -32,16 +32,16 @@ namespace ePassport {
             set { val = value; }
         }
         
-        public IV() 
+        public KEA_Parms_Id() 
         {
         }
 
-        public IV(byte[] value) 
+        public KEA_Parms_Id(byte[] value) 
         {
             this.Value = value;
         }
         
-        public IV(BitString value) 
+        public KEA_Parms_Id(BitString value) 
         {
             this.Value = value.Value;
         }
@@ -50,7 +50,7 @@ namespace ePassport {
         {
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(IV));
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(KEA_Parms_Id));
         public IASN1PreparedElementData PreparedData {
             get { return preparedData; }
         }

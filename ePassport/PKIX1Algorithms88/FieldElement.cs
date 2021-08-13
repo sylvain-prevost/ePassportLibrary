@@ -18,36 +18,40 @@ namespace ePassport {
 
 
     [ASN1PreparedElement]
-    [ASN1BoxedType(Name = "RC2ParameterVersion")]
-    public class RC2ParameterVersion: IASN1PreparedElement 
+    [ASN1BoxedType(Name = "FieldElement")]
+    public class FieldElement: IASN1PreparedElement 
     {
     
-        private BigInteger val;
+        private byte[] val = null;
+
+        [ASN1OctetString(Name = "FieldElement")]
         
-        [ASN1Integer(Name = "RC2ParameterVersion")]
-        
-        public BigInteger Value
+        public byte[] Value
         {
             get { return val; }
             set { val = value; }
         }
         
-        public RC2ParameterVersion()
+        public FieldElement() 
         {
         }
 
-        public RC2ParameterVersion(BigInteger value)
+        public FieldElement(byte[] value) 
         {
             this.Value = value;
+        }
+        
+        public FieldElement(BitString value) 
+        {
+            this.Value = value.Value;
         }
 
         public void initWithDefaults()
         {
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(RC2ParameterVersion));
-        public IASN1PreparedElementData PreparedData 
-        {
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(FieldElement));
+        public IASN1PreparedElementData PreparedData {
             get { return preparedData; }
         }
 

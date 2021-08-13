@@ -18,13 +18,13 @@ namespace ePassport {
 
 
     [ASN1PreparedElement]
-    [ASN1BoxedType(Name = "Dss_Pub_Key")]
-    public class Dss_Pub_Key: IASN1PreparedElement 
+    [ASN1BoxedType(Name = "DSAPublicKey")]
+    public class DSAPublicKey: IASN1PreparedElement 
     {
     
         private BigInteger val;
         
-        [ASN1Integer(Name = "Dss-Pub-Key")]
+        [ASN1Integer(Name = "DSAPublicKey")]
         
         public BigInteger Value
         {
@@ -32,11 +32,11 @@ namespace ePassport {
             set { val = value; }
         }
         
-        public Dss_Pub_Key()
+        public DSAPublicKey()
         {
         }
 
-        public Dss_Pub_Key(BigInteger value)
+        public DSAPublicKey(BigInteger value)
         {
             this.Value = value;
         }
@@ -45,7 +45,7 @@ namespace ePassport {
         {
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(Dss_Pub_Key));
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(DSAPublicKey));
         public IASN1PreparedElementData PreparedData 
         {
             get { return preparedData; }

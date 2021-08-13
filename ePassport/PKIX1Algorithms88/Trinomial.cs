@@ -18,33 +18,34 @@ namespace ePassport {
 
 
     [ASN1PreparedElement]
-    [ASN1BoxedType(Name = "RC2wrapParameter")]
-    public class RC2wrapParameter: IASN1PreparedElement 
+    [ASN1BoxedType(Name = "Trinomial")]
+    public class Trinomial: IASN1PreparedElement 
     {
-
-        private RC2ParameterVersion val;
-
+    
+        private BigInteger val;
         
-		[ASN1Element(Name = "RC2wrapParameter", IsOptional = false, HasTag = false, HasDefaultValue = false)]
-        public RC2ParameterVersion Value
+        [ASN1Integer(Name = "Trinomial")]
+        
+        public BigInteger Value
         {
             get { return val; }
-            
             set { val = value; }
-            
+        }
+        
+        public Trinomial()
+        {
         }
 
-        
-        
-        public RC2wrapParameter ()
+        public Trinomial(BigInteger value)
         {
+            this.Value = value;
         }
 
         public void initWithDefaults()
         {
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(RC2wrapParameter));
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(Trinomial));
         public IASN1PreparedElementData PreparedData 
         {
             get { return preparedData; }

@@ -18,8 +18,8 @@ namespace ePassport {
 
 
     [ASN1PreparedElement]
-    [ASN1Sequence(Name = "DHDomainParameters", IsSet = false)]
-    public class DHDomainParameters : IASN1PreparedElement 
+    [ASN1Sequence(Name = "DomainParameters", IsSet = false)]
+    public class DomainParameters : IASN1PreparedElement 
     {
         
         private BigInteger p_;
@@ -91,7 +91,7 @@ namespace ePassport {
             
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(DHDomainParameters));
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(DomainParameters));
         public IASN1PreparedElementData PreparedData 
         {
             get { return preparedData; }

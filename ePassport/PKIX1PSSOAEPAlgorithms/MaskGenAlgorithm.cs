@@ -18,14 +18,14 @@ namespace ePassport {
 
 
     [ASN1PreparedElement]
-    [ASN1BoxedType(Name = "KeyWrapAlgorithm")]
-    public class KeyWrapAlgorithm: IASN1PreparedElement 
+    [ASN1BoxedType(Name = "MaskGenAlgorithm")]
+    public class MaskGenAlgorithm: IASN1PreparedElement 
     {
 
         private AlgorithmIdentifier val;
 
         
-		[ASN1Element(Name = "KeyWrapAlgorithm", IsOptional = false, HasTag = false, HasDefaultValue = false)]
+		[ASN1Element(Name = "MaskGenAlgorithm", IsOptional = false, HasTag = false, HasDefaultValue = false)]
         public AlgorithmIdentifier Value
         {
             get { return val; }
@@ -36,7 +36,7 @@ namespace ePassport {
 
         
         
-        public KeyWrapAlgorithm ()
+        public MaskGenAlgorithm ()
         {
         }
 
@@ -44,7 +44,7 @@ namespace ePassport {
         {
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(KeyWrapAlgorithm));
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(MaskGenAlgorithm));
         public IASN1PreparedElementData PreparedData 
         {
             get { return preparedData; }
