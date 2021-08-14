@@ -52,6 +52,25 @@ namespace ePassport
             JPEG2000 = 4,
             PNG = 5
         }
+        
+        public enum IrisImageFormat : ushort
+        {
+            MONO_RAW = 2,
+            RGB_RAW = 4,
+            MONO_JPEG = 6,
+            RGB_JPEG = 8,
+            MONO_JPEG_LS = 10,
+            RGB_JPEG_LS = 12,
+            MONO_JPEG2000 = 14,
+            RGB_JPEG2000 = 16,
+        }
+
+        public enum IrisBiometricSubType : byte
+        {
+            Unspecified = 0,
+            Right = 1,
+            Left = 2
+        }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
         public struct FacialRecordHeader
@@ -75,13 +94,10 @@ namespace ePassport
 
             public ushort numberOfFeaturesPoints;
 
-            [MarshalAs(UnmanagedType.U1)]
             public Gender gender;
 
-            [MarshalAs(UnmanagedType.U1)]
             public EyeColor eyeColor;
 
-            [MarshalAs(UnmanagedType.U1)]
             public HairColor hairColor;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
@@ -146,7 +162,6 @@ namespace ePassport
 
             public byte depth;
 
-            [MarshalAs(UnmanagedType.U1)]
             public CompressionAlgorithm compressionAlgorithm;
 
             public ushort rfu;
@@ -173,6 +188,63 @@ namespace ePassport
             public ushort height;
 
             public byte rfu;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct IrisImageInformation
+        {
+            public ushort imageNumber;
+
+            public byte quality;
+
+            public short rotationAngle;
+
+            public ushort rotationAngleUncertainty;
+
+            public uint imageLength;            
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct IrisBiometricSubtypeInformation
+        {
+            public IrisBiometricSubType biometricSubtype;
+
+            public ushort count;            
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct IrisRecordHeader
+        {
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+            public string formatIdentifier;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+            public string versionNumber;
+
+            public uint recordLength;
+
+            public ushort captureDeviceId;
+
+            public byte count;
+
+            public ushort recordHeaderLength;
+
+            public ushort imagePropertiesBits;
+
+            public ushort irisDiameter;
+
+            public IrisImageFormat imageFormat;            
+
+            public ushort rawImageWidth;
+
+            public ushort rawImageHeight;
+
+            public byte intensityDepth;
+
+            public byte imageTransformation;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public byte[] deviceUniqueId;            
         }
 
         /// <summary>
@@ -203,29 +275,68 @@ namespace ePassport
 
             foreach (FieldInfo fi in fieldInfo)
             {
-                if (fi.FieldType == typeof(System.UInt16))
+                Type parentType = null;
+                Type fieldType = fi.FieldType;
+
+                if (fi.FieldType.IsSubclassOf(typeof(Enum)))
+                {
+                    parentType = fieldType;
+                    fieldType = Enum.GetUnderlyingType(fi.FieldType);                    
+                }                
+
+                if (fieldType == typeof(System.Int16))
+                {
+                    Int16 i16 = (Int16)fi.GetValue(stuff);
+                    List<byte> rev = new List<byte>(BitConverter.GetBytes(i16));
+                    rev.Reverse();
+                    byte[] b16r = rev.ToArray();
+                    object obj = (parentType == null) ? BitConverter.ToInt16(b16r, 0) : Enum.ToObject(parentType, BitConverter.ToInt16(b16r, 0));
+                    fi.SetValueDirect(__makeref(stuff), obj);
+                }
+                else if (fieldType == typeof(System.Int32))
+                {
+                    Int32 i32 = (Int32)fi.GetValue(stuff);
+                    List<byte> rev = new List<byte>(BitConverter.GetBytes(i32));
+                    rev.Reverse();
+                    byte[] b32r = rev.ToArray();
+                    object obj = (parentType == null) ? BitConverter.ToInt32(b32r, 0) : Enum.ToObject(parentType, BitConverter.ToInt32(b32r, 0));
+                    fi.SetValueDirect(__makeref(stuff), obj);
+                }
+                else if (fieldType == typeof(System.Int64))
+                {
+                    Int64 i64 = (Int64)fi.GetValue(stuff);
+                    List<byte> rev = new List<byte>(BitConverter.GetBytes(i64));
+                    rev.Reverse();
+                    byte[] b64r = rev.ToArray();
+                    object obj = (parentType == null) ? BitConverter.ToInt64(b64r, 0) : Enum.ToObject(parentType, BitConverter.ToInt64(b64r, 0));
+                    fi.SetValueDirect(__makeref(stuff), obj);
+                }
+                else if (fieldType == typeof(System.UInt16))
                 {
                     UInt16 i16 = (UInt16)fi.GetValue(stuff);
                     List<byte> rev = new List<byte>(BitConverter.GetBytes(i16));
                     rev.Reverse();
                     byte[] b16r = rev.ToArray();
-                    fi.SetValueDirect(__makeref(stuff), BitConverter.ToUInt16(b16r, 0));
+                    object obj = (parentType == null) ? BitConverter.ToUInt16(b16r, 0) : Enum.ToObject(parentType, BitConverter.ToUInt16(b16r, 0));
+                    fi.SetValueDirect(__makeref(stuff), obj);                    
                 }
-                else if (fi.FieldType == typeof(System.UInt32))
+                else if (fieldType == typeof(System.UInt32))
                 {
                     UInt32 i32 = (UInt32)fi.GetValue(stuff);
                     List<byte> rev = new List<byte>(BitConverter.GetBytes(i32));
                     rev.Reverse();
                     byte[] b32r = rev.ToArray();
-                    fi.SetValueDirect(__makeref(stuff), BitConverter.ToUInt16(b32r, 0));
+                    object obj = (parentType == null) ? BitConverter.ToUInt32(b32r, 0) : Enum.ToObject(parentType, BitConverter.ToUInt32(b32r, 0));
+                    fi.SetValueDirect(__makeref(stuff), obj);                    
                 }
-                else if (fi.FieldType == typeof(System.UInt64))
+                else if (fieldType == typeof(System.UInt64))
                 {
                     UInt64 i64 = (UInt64)fi.GetValue(stuff);
                     List<byte> rev = new List<byte>(BitConverter.GetBytes(i64));
                     rev.Reverse();
                     byte[] b64r = rev.ToArray();
-                    fi.SetValueDirect(__makeref(stuff), BitConverter.ToUInt16(b64r, 0));
+                    object obj = (parentType == null) ? BitConverter.ToUInt64(b64r, 0) : Enum.ToObject(parentType, BitConverter.ToUInt64(b64r, 0));
+                    fi.SetValueDirect(__makeref(stuff), obj);                    
                 }
             }
 

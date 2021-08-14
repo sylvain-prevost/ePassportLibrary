@@ -32,6 +32,9 @@ namespace examples
             // Parsing example of an ePassport Datagroup3 (fingerprint)
             FingerPrintDatagroupExample.Parse(@"bsi2008\Datagroup3.bin");
 
+            // Parsing example of an ePassport Datagroup4 (iris)
+            IrisDatagroupExample.Parse(@"bsi2008\Datagroup4.bin");
+
             // Parsing example of an ePassport Datagroup14 (security options)
             SecurityOptionsDatagroupExample.Parse(@"bsi2008\Datagroup14.bin");
         }
