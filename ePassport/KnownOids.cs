@@ -185,11 +185,164 @@ namespace ePassport
         [Description("2.23.136.1.1.6.2")]
         documentTypeList,
 
+        [Description("0.4.0.127.0.7.2.2.1.1")]
+        smartcards_id_PK_DH,
+
         [Description("0.4.0.127.0.7.2.2.1.2")]
         smartcards_id_PK_ECDH,
 
+        [Description("0.4.0.127.0.7.2.2.4")]
+        smartcards_id_PACE,
+
+        [Description("0.4.0.127.0.7.2.2.4.1")]
+        smartcards_id_PACE_DH_GM,        
+
+        [Description("0.4.0.127.0.7.2.2.4.1.1")]
+        smartcards_id_PACE_DH_GM_3DES_CBC_CBC,
+
+        [Description("0.4.0.127.0.7.2.2.4.1.2")]
+        smartcards_id_PACE_DH_GM_AES_CBC_CMAC_128,
+
+        [Description("0.4.0.127.0.7.2.2.4.1.3")]
+        smartcards_id_PACE_DH_GM_AES_CBC_CMAC_192,
+
+        [Description("0.4.0.127.0.7.2.2.4.1.4")]
+        smartcards_id_PACE_DH_GM_AES_CBC_CMAC_256,
+
+        [Description("0.4.0.127.0.7.2.2.4.2")]
+        smartcards_id_PACE_ECDH_GM,
+
+        [Description("0.4.0.127.0.7.2.2.4.2.1")]
+        smartcards_id_PACE_ECDH_GM_3DES_CBC_CBC,
+
+        [Description("0.4.0.127.0.7.2.2.4.2.2")]
+        smartcards_id_PACE_ECDH_GM_AES_CBC_CMAC_128,
+
+        [Description("0.4.0.127.0.7.2.2.4.2.3")]
+        smartcards_id_PACE_ECDH_GM_AES_CBC_CMAC_192,
+
         [Description("0.4.0.127.0.7.2.2.4.2.4")]
-        smartcards_id_PACE_ECDH_GM_AES_CBC_CMAC_256
+        smartcards_id_PACE_ECDH_GM_AES_CBC_CMAC_256,
+
+        [Description("0.4.0.127.0.7.2.2.4.3")]
+        smartcards_id_PACE_DH_IM,
+
+        [Description("0.4.0.127.0.7.2.2.4.3.1")]
+        smartcards_id_PACE_DH_IM_3DES_CBC_CBC,
+
+        [Description("0.4.0.127.0.7.2.2.4.3.2")]
+        smartcards_id_PACE_DH_IM_AES_CBC_CMAC_128,
+
+        [Description("0.4.0.127.0.7.2.2.4.3.3")]
+        smartcards_id_PACE_DH_IM_AES_CBC_CMAC_192,
+
+        [Description("0.4.0.127.0.7.2.2.4.3.4")]
+        smartcards_id_PACE_DH_IM_AES_CBC_CMAC_256,
+
+        [Description("0.4.0.127.0.7.2.2.4.4")]
+        smartcards_id_PACE_ECDH_IM,
+
+        [Description("0.4.0.127.0.7.2.2.4.4.1")]
+        smartcards_id_PACE_ECDH_IM_3DES_CBC_CBC,
+
+        [Description("0.4.0.127.0.7.2.2.4.4.2")]
+        smartcards_id_PACE_ECDH_IM_AES_CBC_CMAC_128,
+
+        [Description("0.4.0.127.0.7.2.2.4.4.3")]
+        smartcards_id_PACE_ECDH_IM_AES_CBC_CMAC_192,
+
+        [Description("0.4.0.127.0.7.2.2.4.4.4")]
+        smartcards_id_PACE_ECDH_IM_AES_CBC_CMAC_256,
+
+        [Description("0.4.0.127.0.7.2.2.4.6")]
+        smartcards_id_PACE_ECDH_CAM,
+
+        [Description("0.4.0.127.0.7.2.2.4.6.2")]
+        smartcards_id_PACE_ECDH_CAM_AES_CBC_CMAC_128,
+
+        [Description("0.4.0.127.0.7.2.2.4.6.3")]
+        smartcards_id_PACE_ECDH_CAM_AES_CBC_CMAC_192,
+
+        [Description("0.4.0.127.0.7.2.2.4.6.4")]
+        smartcards_id_PACE_ECDH_CAM_AES_CBC_CMAC_256,
+
+
+        [Description("2.23.136")]
+        id_icao,
+
+        [Description("2.23.136.1")]
+        id_icao_mrtd,
+
+        [Description("2.23.136.1.1")]
+        id_icao_mrtd_security,
+
+        [Description("2.23.136.1.1.5")]
+        id_icao_mrtd_security_aaProtocolObject,
+
+        [Description("2.23.136.1.1.13")]
+        id_icao_mrtd_security_EFDIR,
+
+        [Description("0.4.0.127.0.7.2.2.2")]
+        id_TA,
+
+        [Description("0.4.0.127.0.7.2.2.2.1")]
+        id_TA_RSA,
+
+        [Description("0.4.0.127.0.7.2.2.2.1.4")]
+        id_TA_RSA_PSS_SHA_256,
+
+        [Description("0.4.0.127.0.7.2.2.2.1.6")]
+        id_TA_RSA_PSS_SHA_512,
+
+        [Description("0.4.0.127.0.7.2.2.2.2")]
+        id_TA_ECDSA,
+
+        [Description("0.4.0.127.0.7.2.2.2.2.2")]
+        id_TA_ECDSA_SHA_224,
+
+        [Description("0.4.0.127.0.7.2.2.2.2.3")]
+        id_TA_ECDSA_SHA_256,
+
+        [Description("0.4.0.127.0.7.2.2.2.2.4")]
+        id_TA_ECDSA_SHA_384,
+
+        [Description("0.4.0.127.0.7.2.2.2.2.5")]
+        id_TA_ECDSA_SHA_512,
+
+        [Description("0.4.0.127.0.7.2.2.3")]
+        id_CA,
+
+        [Description("0.4.0.127.0.7.2.2.3.1")]
+        id_CA_DH,
+
+        [Description("0.4.0.127.0.7.2.2.3.1.1")]
+        id_CA_DH_3DES_CBC_CBC,
+
+        [Description("0.4.0.127.0.7.2.2.3.1.2")]
+        id_CA_DH_AES_CBC_CMAC_128,
+
+        [Description("0.4.0.127.0.7.2.2.3.1.3")]
+        id_CA_DH_AES_CBC_CMAC_192,
+
+        [Description("0.4.0.127.0.7.2.2.3.1.4")]
+        id_CA_DH_AES_CBC_CMAC_256,
+
+        [Description("0.4.0.127.0.7.2.2.3.2")]
+        id_CA_ECDH,
+
+        [Description("0.4.0.127.0.7.2.2.3.2.1")]
+        id_CA_ECDH_3DES_CBC_CBC,
+
+        [Description("0.4.0.127.0.7.2.2.3.2.2")]
+        id_CA_ECDH_AES_CBC_CMAC_128,
+
+        [Description("0.4.0.127.0.7.2.2.3.2.3")]
+        id_CA_ECDH_AES_CBC_CMAC_192,
+
+        [Description("0.4.0.127.0.7.2.2.3.2.4")]
+        id_CA_ECDH_AES_CBC_CMAC_256,
+
+
     }
 
     public class Oids

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31507.150
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1340
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "examples", "examples.csproj", "{847EA33A-9BA7-455B-A06E-7B44D616D677}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ePassportLibrary", "..\ePassportLibrary.csproj", "{2C212920-19B6-458D-968F-A3B3A03A6701}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{847EA33A-9BA7-455B-A06E-7B44D616D677}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{847EA33A-9BA7-455B-A06E-7B44D616D677}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{847EA33A-9BA7-455B-A06E-7B44D616D677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C212920-19B6-458D-968F-A3B3A03A6701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C212920-19B6-458D-968F-A3B3A03A6701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C212920-19B6-458D-968F-A3B3A03A6701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C212920-19B6-458D-968F-A3B3A03A6701}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

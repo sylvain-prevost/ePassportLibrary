@@ -16,4 +16,9 @@ using org.bn;
 
 namespace ePassport {
 
+    [ASN1Module ( Name = "MRTDElementaryFiles", IsImplicitTags =  true  ) ]
+    public class MRTDElementaryFiles 
+    {
+    }
+        
 }

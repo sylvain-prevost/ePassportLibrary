@@ -18,25 +18,25 @@ namespace ePassport {
 
 
     [ASN1PreparedElement]
-    [ASN1BoxedType(Name = "DGSOD")]
-    public class DGSOD: IASN1PreparedElement 
+    [ASN1BoxedType(Name = "DG14")]
+    public class DG14: IASN1PreparedElement 
     {
 
-        private DGSODSequenceType val;
+        private DG14SequenceType val;
 
         
     [ASN1PreparedElement]
-    [ASN1Sequence(Name = "DGSOD", IsSet = false)]
-    public class DGSODSequenceType : IASN1PreparedElement
+    [ASN1Sequence(Name = "DG14", IsSet = false)]
+    public class DG14SequenceType : IASN1PreparedElement
     {
         
-        private ContentInfo sod_;
+        private SecurityInfos securityInfos_;
         
-		[ASN1Element(Name = "sod", IsOptional = false, HasTag = false, HasDefaultValue = false)]
-        public ContentInfo Sod
+		[ASN1Element(Name = "securityInfos", IsOptional = false, HasTag = false, HasDefaultValue = false)]
+        public SecurityInfos SecurityInfos
         {
-            get { return sod_; }
-            set { sod_ = value;  }
+            get { return securityInfos_; }
+            set { securityInfos_ = value;  }
         }
   
         
@@ -45,15 +45,15 @@ namespace ePassport {
             
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(DGSODSequenceType));
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(DG14SequenceType));
         public IASN1PreparedElementData PreparedData 
         {
             get { return preparedData; }
         }
     }
                 
-		[ASN1Element(Name = "DGSOD", IsOptional = false, HasTag = true, Tag = 23, TagClass = TagClasses.Application, HasDefaultValue = false)]
-        public DGSODSequenceType Value
+		[ASN1Element(Name = "DG14", IsOptional = false, HasTag = true, Tag = 14, TagClass = TagClasses.Application, HasDefaultValue = false)]
+        public DG14SequenceType Value
         {
             get { return val; }
             
@@ -63,7 +63,7 @@ namespace ePassport {
 
         
         
-        public DGSOD ()
+        public DG14 ()
         {
         }
 
@@ -71,7 +71,7 @@ namespace ePassport {
         {
         }
 
-        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(DGSOD));
+        private static IASN1PreparedElementData preparedData = CoderFactory.getInstance().newPreparedElementData(typeof(DG14));
         public IASN1PreparedElementData PreparedData 
         {
             get { return preparedData; }

@@ -191,22 +191,22 @@ namespace ePassport
             CoderFactory.getInstance().newEncoder("DER").encode<T>(t, memoryStream);            
         }
 
-        public static T DerDecode<T>(string message)
+        public static T DerDecode<T>(string message, bool applicationTagSmallestEncodingSizeRuleRelaxed = false)
         {
-            return DerDecode<T>(HexStringToByteArray(message));
+            return DerDecode<T>(HexStringToByteArray(message), applicationTagSmallestEncodingSizeRuleRelaxed);
         }
 
-        public static T DerDecode<T>(byte[] message)
+        public static T DerDecode<T>(byte[] message, bool applicationTagSmallestEncodingSizeRuleRelaxed = false)
         {
-            return DerDecode<T>(message, 0, message.Length);
+            return DerDecode<T>(message, 0, message.Length, applicationTagSmallestEncodingSizeRuleRelaxed);
         }
 
-        public static T DerDecode<T>(byte[] message, int offset, int length)
+        public static T DerDecode<T>(byte[] message, int offset, int length, bool applicationTagSmallestEncodingSizeRuleRelaxed = false)
         {
             MemoryStream memoryStream = new MemoryStream(message, offset, length);
             try
             {
-                return DerDecode<T>(memoryStream);
+                return DerDecode<T>(memoryStream, applicationTagSmallestEncodingSizeRuleRelaxed);
             }
             finally
             {
@@ -214,9 +214,11 @@ namespace ePassport
             }
         }
 
-        public static T DerDecode<T>(MemoryStream memoryStream)
+        public static T DerDecode<T>(MemoryStream memoryStream, bool applicationTagSmallestEncodingSizeRuleRelaxed = false)
         {
-            return CoderFactory.getInstance().newDecoder("DER").decode<T>(memoryStream);            
+            IDecoder decoder = CoderFactory.getInstance().newDecoder("DER");
+            decoder.ApplicationTagSmallestEncodingSizeRuleRelaxed = applicationTagSmallestEncodingSizeRuleRelaxed;
+            return decoder.decode<T>(memoryStream);
         }
 
         #endregion
