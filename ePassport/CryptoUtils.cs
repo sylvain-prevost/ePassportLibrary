@@ -1,33 +1,20 @@
 ﻿
 
-#define RSA_VERIFY_SUPPORT
-//#define ECC_VERIFY_SUPPORT
-//#define RSA_PSS_VERIFY_SUPPORT
-
-#if RSA_PSS_VERIFY_SUPPORT
-    // there is currently a bug in MS implementation which prevent proper use of RSA PSS    
-    //#define USE_MICROSOFT_RSA_CNG
-    #define USE_BOUNCYCASTLE
-#endif
-
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Security.Cryptography;
 
 
-#if USE_BOUNCYCASTLE
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Crypto.Signers;
-using Org.BouncyCastle.Crypto;
-#endif
-
-
-
 namespace ePassport
 {
+    using Org.BouncyCastle.Crypto.Digests;
+    using Org.BouncyCastle.Crypto.Engines;
+    using Org.BouncyCastle.Crypto.Parameters;
+    using Org.BouncyCastle.Crypto.Signers;
+    using Org.BouncyCastle.Crypto;
+    using Org.BouncyCastle.Security;
+
     public static class CryptoUtils
     {
         private static int GetHashAlgoOutputSizeFromOid(string algorithmOid)
@@ -53,7 +40,6 @@ namespace ePassport
             }
         }
 
-#if USE_BOUNCYCASTLE
         private static IDigest GetBouncyCastleHashAlgoInstanceFromOid(string algorithmOid)
         {
             GeneralDigest digestAlgo = new Sha1Digest();
@@ -78,7 +64,6 @@ namespace ePassport
                     throw new NotImplementedException("hash algorithm : " + algorithmOidEnum + "(" + algorithmOid + ") not yet implemented");
             }
         }
-#endif
 
         private static System.Security.Cryptography.HashAlgorithm GetMicrosoftHashAlgoInstanceFromOid(string algorithmOid)
         {
@@ -120,27 +105,6 @@ namespace ePassport
             }            
         }
 
-#if ECC_VERIFY_SUPPORT
-        private static System.Security.Cryptography.ECPoint ByteArrayToCryptoECPoint(byte[] data)
-        {            
-            List<byte> dataList = new List<byte>(data);            
-            if (dataList[0] == 0x04)
-            {
-                // uncompressed
-                dataList.RemoveAt(0);                
-            }
-
-            int componentLen = dataList.Count / 2;
-
-            System.Security.Cryptography.ECPoint ecPoint = new System.Security.Cryptography.ECPoint();
-            ecPoint.X = dataList.GetRange(0, componentLen).ToArray();
-            dataList.RemoveRange(0, componentLen);
-            ecPoint.Y = dataList.GetRange(0, componentLen).ToArray();
-
-            return ecPoint;
-        }        
-#endif
-
         public static bool VerifyDigestSignature(SubjectPublicKeyInfo subjectPublicKeyInfo, byte[] digestToVerify, string digestAlgorithmOid, byte[] signatureToVerify)
         {
             bool result = false;
@@ -149,13 +113,13 @@ namespace ePassport
 
             switch (algorithmOidEnum)
             {
-#if RSA_VERIFY_SUPPORT
+
                 case KnownOids.rsaEncryption:
                     {
                         RSAPublicKey rsaPublicKey = Utils.DerDecode<RSAPublicKey>(subjectPublicKeyInfo.SubjectPublicKey.Value);
 
-                        byte[] modulus = rsaPublicKey.Modulus.ToBigEndianByteArray();
-                        byte[] exponent = rsaPublicKey.PublicExponent.ToBigEndianByteArray();
+                        byte[] modulus = rsaPublicKey.Modulus.ToMicrosoftBigEndianByteArray();
+                        byte[] exponent = rsaPublicKey.PublicExponent.ToMicrosoftBigEndianByteArray();
 
                         //Create a new instance of RSACryptoServiceProvider.
                         using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider(modulus.Length * 8))
@@ -177,14 +141,12 @@ namespace ePassport
                         }
                     }
                     return result;
-#endif
 
-#if RSA_PSS_VERIFY_SUPPORT
+
                 case KnownOids.rsassa_pss:
                     {
                         RSAPublicKey rsaPublicKey = Utils.DerDecode<RSAPublicKey>(subjectPublicKeyInfo.SubjectPublicKey.Value);
 
-#if USE_BOUNCYCASTLE
                         int saltLength = 20;
                         IDigest digestAlgo = new Sha1Digest();                        
 
@@ -206,97 +168,37 @@ namespace ePassport
 
                         eng.BlockUpdate(digestToVerify, 0, digestToVerify.Length);
 
-                        result = eng.VerifySignature(signatureToVerify);                    
-#endif                        
-
-#if USE_MICROSOFT_RSA_CNG
-                        byte[] modulus = rsaPublicKey.Modulus.ToBigEndianByteArray();
-                        byte[] exponent = rsaPublicKey.PublicExponent.ToBigEndianByteArray();
-
-                        //Create a new instance of RSACryptoServiceProvider.
-                        using (RSACng rsa = new RSACng(modulus.Length * 8))
-                        {
-                            //Create a new instance of RSAParameters.
-                            RSAParameters RSAKeyInfo = new RSAParameters();
-
-                            //Set RSAKeyInfo to the public key values.                             
-                            RSAKeyInfo.Modulus = modulus;
-                            RSAKeyInfo.Exponent = exponent;
-
-                            //Import key parameters into RSA.
-                            rsa.ImportParameters(RSAKeyInfo);
-
-                            HashAlgorithmName hashAlgorithmName = HashAlgorithmName.SHA256;
-                            RSASignaturePadding rsaSignaturePadding = RSASignaturePadding.Pss;
-
-                            result = rsa.VerifyHash(digestToVerify, signatureToVerify, hashAlgorithmName, rsaSignaturePadding);                            
-                        }
-#endif
+                        result = eng.VerifySignature(signatureToVerify);
 
                     }
                     return result;
-#endif
 
-#if ECC_VERIFY_SUPPORT
+
                 case KnownOids.ecPublicKey:
                     {
-                        System.Security.Cryptography.ECParameters ecParameters = new System.Security.Cryptography.ECParameters();
-                        ecParameters.Curve = new ECCurve();                        
+                        // in case of ecdsa, the signature is a sequence of r and s that needs to be concatenated
+                        ECDSA_Sig_Value ecdsaSignature = Utils.DerDecode<ECDSA_Sig_Value>(signatureToVerify);
 
-                        ePassport.ECParameters decodedEcParameters = Utils.DerDecode<ePassport.ECParameters>(subjectPublicKeyInfo.Algorithm.Parameters);
+                        byte[] subjectPublicKeyInfoData = Utils.DerEncodeAsByteArray<SubjectPublicKeyInfo>(subjectPublicKeyInfo);
+                        Org.BouncyCastle.Asn1.Asn1Sequence asn1Sequence = (Org.BouncyCastle.Asn1.Asn1Sequence)Org.BouncyCastle.Asn1.Asn1Sequence.FromByteArray(subjectPublicKeyInfoData);
+                        Org.BouncyCastle.Asn1.X509.SubjectPublicKeyInfo x509SubjectPublicKeyInfo = Org.BouncyCastle.Asn1.X509.SubjectPublicKeyInfo.GetInstance(asn1Sequence);
 
-                        if (decodedEcParameters.Version.Value == 1)
-                        {
-                            KnownOids fieldTypeOidEnum = Oids.ParseKnown(decodedEcParameters.FieldID.FieldType.Value);
+                        AsymmetricKeyParameter publicKeyParam = PublicKeyFactory.CreateKey(x509SubjectPublicKeyInfo);
 
-                            switch (fieldTypeOidEnum)
-                            {
-                                case KnownOids.prime_field:
-                                    {
-                                        BigInteger primeBi = Utils.DerDecode<Prime_p>(decodedEcParameters.FieldID.Parameters).Value;
-                                        ecParameters.Curve.Prime = primeBi.ToBigEndianByteArray();
-                                        ecParameters.Curve.CurveType = ECCurve.ECCurveType.PrimeShortWeierstrass;
-                                    }
-                                    break;
+                        ECDsaSigner ecdsa = new ECDsaSigner();
 
-                                case KnownOids.characteristic_two_field:
-                                    throw new NotImplementedException("ECC field type : " + fieldTypeOidEnum + "(" + decodedEcParameters.FieldID.FieldType.Value + ") not yet implemented");
+                        ecdsa.Init(false, publicKeyParam);
 
-                                default:
-                                    throw new NotImplementedException("ECC field type : " + fieldTypeOidEnum + "(" + decodedEcParameters.FieldID.FieldType.Value + ") not yet implemented");                                    
-                            }
+                        result = ecdsa.VerifySignature(
+                            digestToVerify,
+                            ecdsaSignature.R.ToBouncyCastleBigInteger(),
+                            ecdsaSignature.S.ToBouncyCastleBigInteger()
+                        );                        
 
-                            ecParameters.Curve.A = decodedEcParameters.Curve.A.Value;
-                            ecParameters.Curve.B = decodedEcParameters.Curve.B.Value;
-                            
-                            if (decodedEcParameters.Curve.isSeedPresent())
-                            {
-                                ecParameters.Curve.Seed = decodedEcParameters.Curve.Seed.Value;                                
-                            }
-
-                            ecParameters.Curve.G = ByteArrayToCryptoECPoint(decodedEcParameters.Base.Value);
-                            ecParameters.Curve.Order = decodedEcParameters.Order.ToBigEndianByteArray();
-
-                            if (decodedEcParameters.isCofactorPresent())
-                            {
-                                ecParameters.Curve.Cofactor = decodedEcParameters.Cofactor.ToBigEndianByteArray();
-                            }
-
-                            ecParameters.Q = ByteArrayToCryptoECPoint(subjectPublicKeyInfo.SubjectPublicKey.Value);
-
-                            ECDsa ecDsa = ECDsa.Create(ecParameters);                            
-
-                            result = ecDsa.VerifyHash(digestToVerify, signatureToVerify);                            
-                        }
-                        else
-                        {
-                            throw new NotSupportedException("Only version1 of ECParameter is expected atm");
-                        }
                     }
                     return result;
-#endif
 
-                        default:
+                default:
                     throw new NotImplementedException("Signature Algorithm : " + algorithmOidEnum + "(" + subjectPublicKeyInfo.Algorithm.Algorithm.Value + ") not yet implemented");
             }
         }
@@ -314,7 +216,8 @@ namespace ePassport
             foreach (SignerInfo signerInfo in signedData.SignerInfos.Value)
             {
                 byte[] digestToVerify = null;
-                byte[] signature = null;
+
+                byte[] signature = signerInfo.Signature.Value;
                 
                 string digestAlgorithmOid = signerInfo.DigestAlgorithm.Value.Algorithm.Value;                
 
@@ -324,19 +227,6 @@ namespace ePassport
                 
                 switch (signatureOidEnum)
                 {
-                    case KnownOids.ecdsa_with_sha1:
-                    case KnownOids.ecdsa_with_sha256:
-                    case KnownOids.ecdsa_with_sha384:
-                    case KnownOids.ecdsa_with_sha512:
-                        digestToVerify = ComputeHash(digestAlgorithmOid, signedData.EncapContentInfo.EContent);
-                        // in case of ecdsa, the signature is a sequence of r and s that needs to be concatenated
-                        ECDSA_Sig_Value ecdsaSignature = Utils.DerDecode<ECDSA_Sig_Value>(signerInfo.Signature.Value);
-                        List<byte> concatenated = new List<byte>();
-                        concatenated.AddRange(ecdsaSignature.R.ToBigEndianByteArray());
-                        concatenated.AddRange(ecdsaSignature.S.ToBigEndianByteArray());
-                        signature = concatenated.ToArray();                        
-                        break;
-
                     case KnownOids.rsassa_pss:
                         // in case of rsa ssa pss, the digest is computed along with the verification
                         digestToVerify = signedData.EncapContentInfo.EContent;
@@ -344,13 +234,13 @@ namespace ePassport
 
                     default:
                         digestToVerify = ComputeHash(digestAlgorithmOid, signedData.EncapContentInfo.EContent);
-                        signature = signerInfo.Signature.Value;
                         break;
                 }
 
                 BigInteger certificateSerialNumber = signerInfo.Sid.IssuerAndSerialNumber.SerialNumber.Value;
 
                 // if SignedAttrs is Present then it should be used (SignedAttrs contains the eContent digest).
+                // Note: not sure how it works with rsa pss...
                 if (signerInfo.isSignedAttrsPresent())
                 {
                     foreach (ePassport.Attribute attribute in signerInfo.SignedAttrs.Value)
@@ -396,18 +286,16 @@ namespace ePassport
 
 
 
-        #region Extensions
+#region Extensions
 
-#if USE_BOUNCYCASTLE
         public static Org.BouncyCastle.Math.BigInteger ToBouncyCastleBigInteger(this BigInteger value)
         {
             List<byte> dataList = new List<byte>(value.ToByteArray());
             dataList.Reverse();
             return new Org.BouncyCastle.Math.BigInteger(dataList.ToArray());
         }
-#endif
 
-        public static byte[] ToBigEndianByteArray(this BigInteger value)
+        public static byte[] ToMicrosoftBigEndianByteArray(this BigInteger value)
         {
             List<byte> dataList = new List<byte>(value.ToByteArray());
             dataList.Reverse();

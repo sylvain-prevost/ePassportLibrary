@@ -9,18 +9,19 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ePassportLibrary.snk</AssemblyOriginatorKeyFile>
+    <IsPackable>true</IsPackable>    
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>C# library enabling parsing/manipulation/encoding of MRTD security features (Passport certificates, picture/fingerprints Datagroups, etc).</Description>
-    <PackageTags>ASN1, ePassport, Certificates</PackageTags>
+    <Description>C# library enabling parsing/manipulation/encoding of MRTD security features (Passport certificates, picture/fingerprints/iris Datagroups, etc).</Description>
+    <PackageTags>ASN1, ePassport, Certificates, Face, Fingerprint, Iris</PackageTags>
     <RepositoryUrl>https://github.com/sylvain-prevost/ePassportLibrary</RepositoryUrl>
     <PackageProjectUrl>https://github.com/sylvain-prevost/ePassportLibrary</PackageProjectUrl>
-    <Version>1.0.0.7</Version>
-    <AssemblyVersion>1.0.0.7</AssemblyVersion>
+    <Version>1.0.0.8</Version>
+    <AssemblyVersion>1.0.0.8</AssemblyVersion>
     <Title>ePassportLibrary</Title>
-    <FileVersion>1.0.0.7</FileVersion>
+    <FileVersion>1.0.0.8</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +32,32 @@
 
   <ItemGroup>
     <PackageReference Include="BinaryNotes.NET" Version="1.5.4.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>import\BouncyCastle.Crypto.dll</HintPath>      
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="import\BouncyCastle.Crypto.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="import\BouncyCastle.Crypto.dll">
+        <Pack>true</Pack>
+        <PackagePath>lib\netcoreapp2.1</PackagePath>
+    </Content>    
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="import\BouncyCastle.Crypto.dll">
+        <Pack>true</Pack>
+        <PackagePath>lib\net40</PackagePath>
+    </Content>    
   </ItemGroup>
 
 </Project>
