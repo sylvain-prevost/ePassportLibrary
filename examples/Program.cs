@@ -37,6 +37,9 @@ namespace examples
 
             // Parsing example of an ePassport Datagroup14 (security options)
             SecurityOptionsDatagroupExample.Parse(@"bsi2008\Datagroup14.bin");
+
+            // Parsing example of an ePassport Datagroup15 (Active Authentication Public Key)
+            ActiveAuthenticationDatagroupExample.Parse(@"bsi2008\Datagroup15.bin");
         }
 
         

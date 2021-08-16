@@ -47,6 +47,11 @@ DG14 ::= [APPLICATION 14] IMPLICIT SEQUENCE {
     securityInfos SecurityInfos
 }
 
+-- Active Authentication Public Key Info datagroup
+DG15 ::= [APPLICATION 15] IMPLICIT SEQUENCE {
+    activeAuthenticationPublicKeyInfo   ActiveAuthenticationPublicKeyInfo
+}
+
 -------------------------------
 -------------------------------
 -------------------------------
@@ -148,5 +153,7 @@ EFDIRInfo ::= SEQUENCE {
     protocol                        OBJECT IDENTIFIER,
     eFDIR                           OCTET STRING
 }
+
+ActiveAuthenticationPublicKeyInfo ::= SubjectPublicKeyInfo
 
 END
