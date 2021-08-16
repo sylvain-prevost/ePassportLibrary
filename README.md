@@ -1,6 +1,8 @@
 # ePassport Library
 
-C# library leveraging [BinaryNotes.NET](https://github.com/sylvain-prevost/BinaryNotes.NET) to enable parsing/manipulation/encoding of MRTD security features (Passport certificates, picture/fingerprints Datagroups, etc).
+C# library leveraging [BinaryNotes.NET](https://github.com/sylvain-prevost/BinaryNotes.NET) to enable parsing/manipulation/encoding of MRTD security features (Passport certificates, picture/fingerprints Datagroups, etc).  
+
+![Nuget](https://img.shields.io/nuget/v/ePassportLibrary?label=Nuget%3A%20ePassportLibrary&style=plastic)  
 
 <u>Example of use:</u>
 
