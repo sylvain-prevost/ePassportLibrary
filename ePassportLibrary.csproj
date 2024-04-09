@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net40</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461;net6.0;net8.0</TargetFrameworks>
     <Authors>Sylvain Prevost</Authors>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
@@ -18,10 +18,10 @@
     <PackageTags>ASN1, ePassport, Certificates, Face, Fingerprint, Iris</PackageTags>
     <RepositoryUrl>https://github.com/sylvain-prevost/ePassportLibrary</RepositoryUrl>
     <PackageProjectUrl>https://github.com/sylvain-prevost/ePassportLibrary</PackageProjectUrl>
-    <Version>1.0.0.9</Version>
-    <AssemblyVersion>1.0.0.9</AssemblyVersion>
+    <Version>1.1.0.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <Title>ePassportLibrary</Title>
-    <FileVersion>1.0.0.9</FileVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,33 +31,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BinaryNotes.NET" Version="1.5.4.6" />
+     <PackageReference Include="BinaryNotes.NET" Version="1.5.4.7" />
+      <PackageReference Include="BouncyCastle.Cryptography">
+          <Version>2.3.0</Version>
+      </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto">
-      <HintPath>import\BouncyCastle.Crypto.dll</HintPath>      
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="import\BouncyCastle.Crypto.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="import\BouncyCastle.Crypto.dll">
-        <Pack>true</Pack>
-        <PackagePath>lib\netstandard2.0</PackagePath>
-    </Content>    
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="import\BouncyCastle.Crypto.dll">
-        <Pack>true</Pack>
-        <PackagePath>lib\net40</PackagePath>
-    </Content>    
-  </ItemGroup>
-
+  
 </Project>
