@@ -18,7 +18,7 @@
     <PackageTags>ASN1, ePassport, Certificates, Face, Fingerprint, Iris</PackageTags>
     <RepositoryUrl>https://github.com/sylvain-prevost/ePassportLibrary</RepositoryUrl>
     <PackageProjectUrl>https://github.com/sylvain-prevost/ePassportLibrary</PackageProjectUrl>
-    <Version>1.1.0.0</Version>
+    <Version>1.2.0.0</Version>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <Title>ePassportLibrary</Title>
     <FileVersion>1.1.0.0</FileVersion>
@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-     <PackageReference Include="BinaryNotes.NET" Version="1.5.4.7" />
+     <PackageReference Include="BinaryNotes.NET" Version="1.6.0" />
       <PackageReference Include="BouncyCastle.Cryptography">
           <Version>2.3.0</Version>
       </PackageReference>
